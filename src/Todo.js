@@ -1,5 +1,12 @@
 import React from 'react';
-import { ListItem, ListItemText, InputBase, Checkbox, ListItemSecondaryAction, IconButton } from "@material-ui/core";
+import { 
+    ListItem, 
+    ListItemText, 
+    InputBase, 
+    Checkbox, 
+    ListItemSecondaryAction, 
+    IconButton 
+} from "@material-ui/core";
 import DeleteOutlined from "@mui/icons-material/DeleteOutlined";
 
 class Todo extends React.Component {
@@ -7,6 +14,7 @@ class Todo extends React.Component {
         super(props);
         this.state = { item: props.item, readOnly: true };
         this.delete = props.delete;
+        this.update = props.update;
     } 
     
     deleteEventHandler = () => {
@@ -23,6 +31,7 @@ class Todo extends React.Component {
     enterKeyEventHandler = (e) => {
         if (e.key === 'Enter') {
             this.setState({ readOnly: true });
+            this.update(this.state.item);
         }
     }
 
@@ -36,6 +45,7 @@ class Todo extends React.Component {
         const thisItem = this.state.item;
         thisItem.done = !thisItem.done;
         this.setState({ item: thisItem });
+        this.update(this.state.item);
     }
 
     render() {
