@@ -14,14 +14,12 @@ export function call(api, method, request) {
   }
 
   return fetch(options.url, options)
-    .then((response) =>
-      response.json().then((json) => {
+    .then((response) => {
         if (!response.ok) {
-          return Promise.reject(json);
+        return Promise.reject(response);
         }
-        return json;
-      })
-    )
+        return response;
+    })
     .catch((error) => {
       console.log(error.status);
       if (error.status === 403) {
