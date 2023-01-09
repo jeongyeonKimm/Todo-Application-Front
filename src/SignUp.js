@@ -1,15 +1,15 @@
 import React from "react";
-import { signin } from "./service/ApiService";
-import { 
-    Link,
+import {
     Button,
     TextField,
+    Link,
     Grid,
     Container,
-    Typography
+    Typography,
 } from "@material-ui/core";
+import { signup } from './service/ApiService';
 
-class Login extends React.Component {
+class SignUp extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -18,25 +18,38 @@ class Login extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         const data = new FormData(event.target);
+        const username = data.get("username");
         const email = data.get("email");
         const password = data.get("password");
-        signin({ email: email, password: password });
+        signup({ email: email, username: username, password: password }).then(
+            (response) => {
+                window.location.href = "/login";
+            }
+        );
     }
 
     render() {
         return (
             <Container component="main" maxWidth="xs" style={{ marginTop: "8%" }}>
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <Typography component="h1" variant="h5">
-                            로그인
-                        </Typography>
-                    </Grid>
-                </Grid>
                 <form noValidate onSubmit={this.handleSubmit}>
-                    {" "}
-                    {/* submit 버튼을 클릭하면 handleSubmit이 실행됨 */}
                     <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <Typography component="h1" variant="h5">
+                                계정 생성
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                autoComplete="fname"
+                                name="username"
+                                variant="outlined"
+                                required
+                                fullWidth
+                                id="username"
+                                label="사용자 이름"
+                                autoFocus
+                            />
+                        </Grid>
                         <Grid item xs={12}>
                             <TextField
                                 variant="outlined"
@@ -53,9 +66,10 @@ class Login extends React.Component {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="password"
-                                label="패스워드"
                                 name="password"
+                                label="패스워드"
+                                type="password"
+                                id="password"
                                 autoComplete="current-password"
                             />
                         </Grid>
@@ -66,17 +80,21 @@ class Login extends React.Component {
                                 variant="contained"
                                 color="primary"
                             >
-                                로그인
+                                계정 생성
                             </Button>
                         </Grid>
-                        <Link href="/signup" variant="body2">
-                            <Grid item>계정이 없습니까? 여기서 가입 하세요.</Grid>
-                        </Link>
+                        <Grid container justify="flex-end">
+                            <Grid item>
+                                <Link href="/login" variant="body2">
+                                    이미 계정이 있습니까? 로그인 하세요.
+                                </Link>
+                            </Grid>
+                        </Grid>
                     </Grid>
                 </form>
             </Container>
-        );
+        )
     }
 }
 
-export default Login;
+export default SignUp;
