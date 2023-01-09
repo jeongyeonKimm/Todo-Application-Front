@@ -12,7 +12,7 @@ export function call(api, method, request) {
   if (request) {
     options.body = JSON.stringify(request);
   }
-  
+
   return fetch(options.url, options)
     .then((response) =>
       response.json().then((json) => {
@@ -29,4 +29,13 @@ export function call(api, method, request) {
       }
       return Promise.reject(error);
     });
+}
+
+export function signin(userDTO) {
+    return call("/auth/signin", "POST", userDTO)
+        .then((response) => {
+            if (response.token) {
+                window.location.href = "/";
+            }
+        });
 }
