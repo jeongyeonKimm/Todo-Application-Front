@@ -13,19 +13,19 @@ import {
   Typography
 } from "@material-ui/core";
 import { call, signout } from "./service/ApiService";
-import { NavigationType } from 'react-router-dom';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [ ],
+      items: [],
+      loading: true,
     };
   }
 
   componentDidMount() {
     call("/todo", "GET", null).then((response) =>
-      this.setState({ items: response.data })
+      this.setState({ items: response.data, loading: false })
     );
   }
 
@@ -80,8 +80,8 @@ class App extends React.Component {
       </AppBar>
     );
 
-    return (
-      <div className="App">
+    var todoListPage = (
+      <div>
         {navigationBar}
         <Container maxWidth="md">
           <AddTodo add={this.add} />
@@ -89,6 +89,15 @@ class App extends React.Component {
         </Container>
       </div>
     );
+
+    var loadingPage = <h1>로딩 중..</h1>
+    
+    var content = loadingPage;
+    if (!this.state.loading) {
+      content = todoListPage;
+    }
+
+    return <div className="App">{content}</div>;
   }
 }
 

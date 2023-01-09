@@ -22,13 +22,12 @@ export function call(api, method, request) {
     }
 
     return fetch(options.url, options)
-        .then((response) =>
-            response.json().then((json) => {
+        .then((response) => {
             if (!response.ok) {
-                return Promise.reject(json);
+                return Promise.reject(response);
             }
-            return json;
-            })
+            return response.json();
+            }
         )
         .catch((error) => {
             console.log(error.status);
